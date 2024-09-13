@@ -1,62 +1,61 @@
-// src/components/PlayerList.js
-import { useState } from "react";
-import { Button, TextField, List, ListItem } from "@mui/material";
-import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { Button } from "@mui/material";
 
-const PlayerList = ({ onStartGame }) => {
-  const [players, setPlayers] = useState([]);
-  const [playerName, setPlayerName] = useState("");
-  const [error, setError] = useState("");
-
-  const addPlayer = () => {
-    if (!playerName) {
-      setError("Player name cannot be empty");
-      return;
-    }
-
-    if (
-      players.some(
-        (player) => player.name.toLowerCase() === playerName.toLowerCase()
-      )
-    ) {
-      setError("Player name already exists");
-      return;
-    }
-
-    setPlayers([...players, { name: playerName }]);
-    setPlayerName("");
-    setError(""); // Clear error after successful addition
+const PlayerList = ({
+  players,
+  currentWord,
+  revealedPlayers,
+  revealForPlayer,
+  navigateToVoting,
+}) => {
+  const getPlayerWord = (player) => {
+    if (player.role === "spy") return "Mr. White";
+    return currentWord;
   };
 
-  const startGame = () => {
-    if (players.length >= 3) {
-      onStartGame(players);
-    } else {
-      alert("You need at least 3 players to start the game.");
+  const allPlayersRevealed = revealedPlayers.length === players.length;
+
+  useEffect(() => {
+    if (allPlayersRevealed) {
+      console.log("All players have revealed their cards");
     }
-  };
+  }, [allPlayersRevealed]);
 
   return (
-    <div className="w-full">
-      <TextField
-        className="w-full"
-        label="Player Name"
-        value={playerName}
-        onChange={(e) => setPlayerName(e.target.value)}
-        error={Boolean(error)}
-        helperText={error}
-      />
-      <Button onClick={addPlayer} variant="contained" color="primary">
-        Add Player
-      </Button>
-      <List>
-        {players.map((player, index) => (
-          <ListItem key={index}>{player.name}</ListItem>
+    <div className="flex flex-col items-center mt-8">
+      <h2 className="text-2xl font-bold mb-4">
+        Click on a player to reveal their word
+      </h2>
+      <div className="flex flex-wrap justify-center">
+        {players.map((player) => (
+          <div key={player.name} className="m-4">
+            {revealedPlayers.includes(player.name) ? (
+              <div className="text-xl">
+                {player.name}: {getPlayerWord(player)}
+              </div>
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => revealForPlayer(player.name)}
+              >
+                {player.name}
+              </Button>
+            )}
+          </div>
         ))}
-      </List>
-      <Button onClick={startGame} variant="contained" color="secondary">
-        Start Game
-      </Button>
+      </div>
+
+      {allPlayersRevealed && (
+        <Button
+          variant="contained"
+          color="secondary"
+          className="mt-6"
+          onClick={navigateToVoting}
+        >
+          Proceed to Voting
+        </Button>
+      )}
     </div>
   );
 };
