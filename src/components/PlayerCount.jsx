@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
-import useLocalStorage from "use-local-storage";
+// import useLocalStorage from "use-local-storage";
 
 const PlayerCount = ({ onGamStart }) => {
   const [civilianCount, setCivilianCount] = useState(2);
   const [spyCount, setSpyCount] = useState(1);
-  const [playerCount, setPlayerCount] = useLocalStorage("playerCount", {});
+  // const [playerCount, setPlayerCount] = useLocalStorage("playerCount", {});
 
   const handleCivilianCount = (e) => {
     e.preventDefault();
     setCivilianCount(e.target.value);
-    setPlayerCount({ ...playerCount, civilians: e.target.value });
+    // setPlayerCount({ ...playerCount, civilians: e.target.value });
   };
 
   const handleSpyCount = (e) => {

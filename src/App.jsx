@@ -1,88 +1,111 @@
-import React, { useState } from "react";
-import GameSetup from "./components/GameSetup";
-import PlayerList from "./components/PlayerList";
-import VotingScreen from "./components/VotingScreen";
-import { words } from "./constants/words"; // Assuming you have a constant file with words
+import React, { useEffect, useState } from "react";
+import useLocalStorage from "use-local-storage";
+
+import PlayerCount from "./components/PlayerCount";
+import GameSession from "./components/GameSession";
+import GameVoting from "./components/GameVoting";
+
+import "./App.css";
 
 const App = () => {
-  const [gameState, setGameState] = useState("setup"); // setup, reveal, vote
-  const [players, setPlayers] = useState([]);
-  const [currentWord, setCurrentWord] = useState(""); // Word for civilians
-  const [revealedPlayers, setRevealedPlayers] = useState([]); // Track revealed players
+  const [existingSession, setExistingSession] = useLocalStorage(
+    "existingSession",
+    false
+  );
+  const [storedPlayers, setStoredPlayers] = useLocalStorage(
+    "storedPlayers",
+    []
+  );
+  const [gameState, setGameState] = useState("setup");
+  const [players, setPlayers] = useState(storedPlayers ?? []);
 
-  // Shuffle array function
-  const shuffleArray = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+  useEffect(() => {
+    if (existingSession) setGameState("session");
+  }, []);
+
+  useEffect(() => {
+    setStoredPlayers(players);
+  }, [players]);
+
+  const startGame = (plr) => {
+    setGameState("session");
+
+    const players = [];
+
+    for (let i = 0; i < plr.spyCount; i++) {
+      players.push({
+        id: Math.random().toString(36).substr(2, 9), // unique id
+        role: "spy",
+        name: "",
+        status: "Active",
+      });
     }
-    return array;
-  };
 
-  // Initialize players and start first round
-  const initializePlayers = ({ civilians, spies, playerNames }) => {
-    let allPlayers = [];
-    for (let i = 0; i < civilians; i++) {
-      allPlayers.push({ name: playerNames[i], role: "civilian" });
+    for (let i = 0; i < plr.civilianCount; i++) {
+      players.push({
+        id: Math.random().toString(36).substr(2, 9),
+        role: "civilian",
+        name: "",
+        status: "Active",
+      });
     }
-    for (let i = civilians; i < civilians + spies; i++) {
-      allPlayers.push({ name: playerNames[i], role: "spy" });
-    }
-    allPlayers = shuffleArray(allPlayers);
-    setPlayers(allPlayers);
-    startNewRound();
+
+    const shuffledPlayers = players.sort(() => Math.random() - 0.5);
+    setPlayers(shuffledPlayers);
+    console.log(shuffledPlayers);
   };
 
-  // Start a new round and generate a new word for civilians
-  const startNewRound = () => {
-    const randomWord = words[Math.floor(Math.random() * words.length)];
-    setCurrentWord(randomWord);
-    setRevealedPlayers([]); // Reset revealed players
-    setGameState("reveal");
+  const addPlayers = (player) => {
+    setPlayers((prevPlayers) => {
+      return prevPlayers.map((p) =>
+        p.id === player.id ? { ...p, name: player.name } : p
+      );
+    });
   };
 
-  // Reveal word or "Mr. White" when a player is selected
-  const revealForPlayer = (playerName) => {
-    setRevealedPlayers([...revealedPlayers, playerName]);
+  const updatePlayerStatus = (player) => {
+    setPlayers((prevPlayers) => {
+      return prevPlayers.map((p) =>
+        p.id === player.id ? { ...p, status: "Revealed" } : p
+      );
+    });
   };
 
-  // Handle navigation to voting screen
-  const navigateToVoting = () => {
+  const eliminatePlayers = (player) => {
+    setPlayers((prevPlayers) => {
+      return prevPlayers.map((p) =>
+        p.id === player.id ? { ...p, status: "Eliminated" } : p
+      );
+    });
+  };
+
+  const gotoVotingPage = () => {
     setGameState("vote");
   };
 
-  const handleVote = (votedPlayerName) => {
-    const votedPlayer = players.find(
-      (player) => player.name === votedPlayerName
-    );
-    if (votedPlayer.role === "spy") {
-      setPlayers(players.filter((player) => player.name !== votedPlayerName));
-      if (players.filter((player) => player.role === "spy").length === 1) {
-        alert("Spies have been eliminated! Civilians win.");
-        setGameState("setup");
-      }
-    } else {
-      alert("A civilian was eliminated!");
-    }
-    startNewRound();
+  const onNewGame = () => {
+    setPlayers((prevPlayers) => {
+      return prevPlayers.map((player) => ({ ...player, status: "Active" }));
+    });
   };
 
   return (
-    <div className="App">
-      {gameState === "setup" && (
-        <GameSetup initializePlayers={initializePlayers} />
-      )}
-      {gameState === "reveal" && (
-        <PlayerList
+    <div className="App w-full">
+      {gameState === "setup" && <PlayerCount onGamStart={startGame} />}
+      {gameState === "session" && (
+        <GameSession
           players={players}
-          currentWord={currentWord}
-          revealedPlayers={revealedPlayers}
-          revealForPlayer={revealForPlayer}
-          navigateToVoting={navigateToVoting}
+          addPlayers={addPlayers}
+          gotoVotingPage={gotoVotingPage}
+          updatePlayerStatus={updatePlayerStatus}
         />
       )}
       {gameState === "vote" && (
-        <VotingScreen players={players} onVote={handleVote} />
+        <GameVoting
+          players={players}
+          eliminatePlayers={eliminatePlayers}
+          onNewGame={onNewGame}
+        />
       )}
     </div>
   );
