@@ -1,0 +1,16 @@
+.checkBoxContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  span {
+    font-size: larger;
+  }
+  svg {
+    width: 25px;
+    height: 25px;
+    fill: #000428;
+  }
+  .check-box {
+    cursor: pointer;
+  }
+}

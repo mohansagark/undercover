@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "title": "ToDo App",
+    "active": true,
+    "navigation": "todoApp"
+  },
+  {
+    "id": 4,
+    "title": "About",
+    "active": false,
+    "navigation": "about"
+  }
+]

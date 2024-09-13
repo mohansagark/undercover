@@ -1,0 +1,69 @@
+.modal .modal-bottom {
+  position: fixed;
+  margin: auto;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  -webkit-transform: translate3d(0%, 0, 0) !important;
+  -ms-transform: translate3d(0%, 0, 0) !important;
+  -o-transform: translate3d(0%, 0, 0) !important;
+  transform: translate3d(0%, 0, 0) !important;
+  top: 235px;
+}
+
+.modal.fade .modal-bottom {
+  bottom: -100% !important;
+  -webkit-transition: opacity 0.3s linear, bottom 0.3s ease-out !important;
+  -moz-transition: opacity 0.3s linear, bottom 0.3s ease-out !important;
+  -o-transition: opacity 0.3s linear, bottom 0.3s ease-out !important;
+  transition: opacity 0.3s linear, bottom 0.3s ease-out !important;
+}
+
+.modal.fade.show .modal-bottom {
+  bottom: 0 !important;
+}
+
+.modal-bottom .modal-content {
+  height: 90%;
+  width: 100%;
+  overflow-y: scroll;
+}
+.modal-bottom {
+  .modalCloseButton {
+    text-align: right;
+    padding-top: 30px;
+    padding-right: 30px;
+    margin: 0px;
+    position: fixed;
+    right: 0;
+    width: 100%;
+    z-index: 1;
+    background: white;
+    padding-bottom: 10px;
+  }
+  .modalCloseCricle {
+    height: 45px;
+    width: 45px;
+    float: right;
+    cursor: pointer;
+    box-shadow: 0 4px 14px 0 rgba(grey, 0.3);
+    border-radius: 50%;
+    text-align: center;
+    svg {
+      margin-top: 11px;
+    }
+  }
+}
+.modalViewBottom {
+  margin-top: 75px;
+}
+
+.tablet,
+.phone {
+  .modal .modal-bottom {
+    top: 185px;
+  }
+  .modal-bottom .modal-content {
+    height: 94%;
+  }
+}

@@ -1,0 +1,29 @@
+.primaryButton {
+  width: 100%;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(to bottom right, #000428, #004e92);
+  span {
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+  }
+}
+.secondaryButton {
+  width: 100%;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 1px #000428;
+  background-color: transparent;
+  span {
+    text-align: center;
+    font-weight: bold;
+    color: #000428;
+  }
+}

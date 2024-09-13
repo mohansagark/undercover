@@ -1,0 +1,30 @@
+.conditional-modal {
+  .modal-header {
+    border-bottom: 0 none;
+    .modal-title {
+      font-size: 2rem;
+    }
+  }
+  .modal-body {
+    font-size: 1.5rem;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  .modal-footer {
+    border-top: 0 none;
+
+    .row {
+      width: 100%;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      .buttonContainer {
+        span {
+          font-size: 1.3rem !important;
+        }
+      }
+    }
+  }
+}

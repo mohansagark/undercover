@@ -1,0 +1,137 @@
+.loginContainer {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(to right top, #fff);
+  .login-form-bg {
+    width: 80%;
+    margin: auto;
+    padding: 0 1rem 1rem 0;
+    height: 100%;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  }
+  .password-field {
+    width: 100%;
+  }
+  .theme-image {
+    min-width: 300px;
+  }
+  .eye-icon {
+    cursor: pointer;
+    font-size: 20px;
+  }
+  .verify-email {
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .form-label {
+    font-size: 12px;
+  }
+  .sub-options {
+    width: 88%;
+    margin: auto 20px;
+    .col {
+      padding: 0;
+    }
+  }
+  .forgot-password {
+    font-size: 12px;
+    font-weight: bold;
+    justify-content: flex-end;
+    display: flex;
+    cursor: pointer;
+  }
+  .form-control {
+    width: 100%;
+  }
+  .text-center {
+    margin: 15px 12px;
+    color: midnightblue;
+  }
+  h1 {
+    font-size: 32px;
+  }
+  .form-label {
+    color: midnightblue;
+  }
+  .form-control {
+    font-size: 14px;
+  }
+  .login-btn {
+    background-image: linear-gradient(
+      to right,
+      #000b18,
+      #00172d,
+      #00172d,
+      midnightblue,
+      #02386e
+    );
+    font-size: 14px;
+    color: white !important;
+    width: 50%;
+    margin: auto;
+    margin-top: 25px;
+    margin-left: 25%;
+    height: 40px;
+    border: 1px solid #9269bc;
+  }
+  .social-media-links {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 20px;
+  }
+  .social-media-btn {
+    background-color: transparent;
+    border: transparent;
+    color: black;
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .blue-btn {
+    color: blue;
+  }
+  .signup-text {
+    text-align: center;
+    color: #3f4554;
+    margin-top: 30px;
+    font-size: 12px;
+    label {
+      cursor: pointer;
+    }
+    label:hover {
+      text-decoration: underline !important;
+    }
+  }
+}
+
+.desktop {
+  .loginContainer {
+    overflow: hidden;
+  }
+}
+
+.phone {
+  .loginContainer {
+    .theme-image {
+      min-width: 300px;
+    }
+  }
+}
+
+.phone,
+.tablet {
+  .loginContainer {
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+  .login-form-bg {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-right: 0;
+  }
+}
