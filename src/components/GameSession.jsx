@@ -35,6 +35,7 @@ const GameSession = ({
   const [randomWord, setRandomWord] = useState("");
   const [allNamesEntered, setAllNamesEntered] = useState(false);
   const [revelead, setRevealed] = useState(0);
+  const [activePlayer, setActivePlayer] = useState("");
 
   useEffect(() => {
     setRandomWord(words[Math.floor(Math.random() * words.length)]);
@@ -45,7 +46,7 @@ const GameSession = ({
       setSelectedPlayerIndex(index);
       setPlayerName(players[index]?.name || "");
       setError("");
-      updatePlayerStatus(players[index]);
+      setActivePlayer(index);
       if (existingSession) {
         setOpenWordModal(true);
         setRevealed((prev) => prev + 1);
@@ -55,11 +56,14 @@ const GameSession = ({
     }
   };
 
-  const handleCloseNameModal = () => {
-    setOpenNameModal(false);
+  const handleCloseNameModal = (event, reason) => {
+    if (reason !== "backdropClick") {
+      setOpenNameModal(false);
+    }
   };
 
   const handleCloseWordModal = () => {
+    updatePlayerStatus(players[activePlayer]);
     setOpenWordModal(false);
   };
 
@@ -90,8 +94,8 @@ const GameSession = ({
     setOpenWordModal(true); // Open word modal after saving name
   };
 
-  const randomise = () =>
-    Math.random() > 0.5 ? (
+  const randomise = (index) =>
+    index % 2 === 0 ? (
       <BoyIcon fontSize="large" />
     ) : (
       <GirlIcon fontSize="large" />
@@ -105,7 +109,7 @@ const GameSession = ({
     <>
       <Box className="flex flex-wrap justify-between gap-4">
         {players.map((player, index) => (
-          <Box key={index}>
+          <Box className="rounded-full" key={index}>
             <Card
               className="flex justify-center items-center"
               sx={{ width: 100, height: 100 }}
@@ -113,7 +117,7 @@ const GameSession = ({
               variant="outlined"
             >
               <CardContent>
-                {player?.name ? player.name : randomise()}
+                {player?.name ? player.name : randomise(index)}
               </CardContent>
             </Card>
           </Box>
