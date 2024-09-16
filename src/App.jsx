@@ -85,7 +85,21 @@ const App = () => {
 
   const onNewGame = () => {
     setPlayers((prevPlayers) => {
-      return prevPlayers.map((player) => ({ ...player, status: "Active" }));
+      const spyCount = prevPlayers.filter((p) => p.role === "spy").length;
+      const civilianCount = prevPlayers.length - spyCount;
+
+      const newRoles = [
+        ...Array(spyCount).fill("spy"),
+        ...Array(civilianCount).fill("civilian"),
+      ].sort(() => Math.random() - 0.5);
+
+      const shuffledPlayers = prevPlayers.map((player, index) => ({
+        ...player,
+        role: newRoles[index],
+        status: "Active",
+      }));
+
+      return shuffledPlayers;
     });
   };
 
